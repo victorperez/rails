@@ -19,6 +19,8 @@ module ActionText
   autoload :Serialization
   autoload :TrixAttachment
 
+  mattr_accessor :editor
+
   module Attachables
     extend ActiveSupport::Autoload
 

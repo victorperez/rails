@@ -12,6 +12,9 @@ module ActionText
     isolate_namespace ActionText
     config.eager_load_namespaces << ActionText
 
+    config.action_text = ActiveSupport::OrderedOptions.new
+    config.action_text.editor = :trix
+
     initializer "action_text.attribute" do
       ActiveSupport.on_load(:active_record) do
         include ActionText::Attribute
@@ -33,6 +36,12 @@ module ActionText
         def to_trix_content_attachment_partial_path
           nil
         end
+      end
+    end
+
+    initializer "action_text.config" do
+      config.after_initialize do |app|
+        ActionText.editor = app.config.action_text.editor || :trix
       end
     end
 
