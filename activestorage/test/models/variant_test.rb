@@ -162,14 +162,41 @@ class ActiveStorage::VariantTest < ActiveSupport::TestCase
   end
 
   test "resized variation of BMP blob" do
-    blob = create_file_blob(filename: "colors.bmp")
+    blob = create_file_blob(filename: "colors.bmp", content_type: "image/bmp")
     variant = blob.variant(resize: "15x15").processed
-    assert_match(/colors\.bmp/, variant.url)
+    assert_match(/colors\.png/, variant.url)
 
     image = read_image(variant)
-    assert_equal "BMP", image.type
+    assert_equal "PNG", image.type
     assert_equal 15, image.width
     assert_equal 8, image.height
+  end
+
+  test "resized variation of JFIF blob" do
+    blob = create_file_blob(filename: "landscape.jfif", content_type: "image/jpeg")
+    variant = blob.variant(resize_to_fill: [100, 100]).processed
+    assert_match(/landscape\.jfif/, variant.url)
+
+    image = read_image(variant)
+    assert_equal "JPEG", image.type
+    assert_equal 100, image.width
+    assert_equal 100, image.height
+  end
+
+  test "resized variation of JFIF blob works for vips processor" do
+    ActiveStorage.variant_processor = :vips
+    blob = create_file_blob(filename: "landscape.jfif", content_type: "image/jpeg")
+    variant = blob.variant(resize_to_fill: [100, 100]).processed
+    assert_match(/landscape\.jfif/, variant.url)
+
+    image = read_image(variant)
+    assert_equal "JPEG", image.type
+    assert_equal 100, image.width
+    assert_equal 100, image.height
+  rescue LoadError
+    # libvips not installed
+  ensure
+    ActiveStorage.variant_processor = :mini_magick
   end
 
   test "optimized variation of GIF blob" do
