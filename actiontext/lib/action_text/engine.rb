@@ -7,6 +7,8 @@ require "active_storage/engine"
 
 require "action_text"
 
+require "action_text/editor/registry"
+
 module ActionText
   class Engine < Rails::Engine
     isolate_namespace ActionText
@@ -41,7 +43,7 @@ module ActionText
 
     initializer "action_text.config" do
       config.after_initialize do |app|
-        ActionText.editor = app.config.action_text.editor || :trix
+        ActionText.editor = ActionText::Editor::Registry.build(app.config.action_text.editor)
       end
     end
 

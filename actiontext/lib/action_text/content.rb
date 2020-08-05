@@ -79,7 +79,7 @@ module ActionText
       render_attachments(with_full_attributes: false, &:to_plain_text).fragment.to_plain_text
     end
 
-    def to_trix_html
+    def to_editor_html
       render_attachments(&:to_trix_attachment).to_html
     end
 

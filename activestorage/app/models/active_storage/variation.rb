@@ -49,6 +49,7 @@ class ActiveStorage::Variation
   # retains the source format.
   def transform(file, format: nil, &block)
     ActiveSupport::Notifications.instrument("transform.active_storage") do
+      puts ">>>>>> #{transformer.inspect}"
       transformer.transform(file, format: format, &block)
     end
   end

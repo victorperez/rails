@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ActionText
-  # The RichText record holds the content produced by the Trix editor in a serialized +body+ attribute.
+  # The RichText record holds the content produced by the editor in a serialized +body+ attribute.
   # It also holds all the references to the embedded files, which are stored using Active Storage.
   # This record is then associated with the Active Record model the application desires to have
   # rich text content using the +has_rich_text+ class method.

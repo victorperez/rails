@@ -13,6 +13,7 @@ module ActionText
   autoload :Attachment
   autoload :Attribute
   autoload :Content
+  autoload :Editor
   autoload :Fragment
   autoload :HtmlConversion
   autoload :PlainTextConversion
